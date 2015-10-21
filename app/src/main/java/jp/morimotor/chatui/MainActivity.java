@@ -25,18 +25,28 @@ public class MainActivity extends AppCompatActivity {
 
     private class itemData{
         private int image_id;
+        private String userName;
         private String text;
         private boolean isUser;
 
-        itemData(int image_id, String text){
+        itemData(int image_id, String userName, String text, boolean isUser){
             this.image_id = image_id;
+            this.userName = userName;
             this.text = text;
+            this.isUser = isUser;
+
         }
         int getImage_id(){
             return this.image_id;
         }
+        String getUserName(){
+            return this.userName;
+        }
         String getText(){
             return this.text;
+        }
+        boolean getIsUser(){
+            return this.isUser;
         }
 
     }
@@ -59,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                itemData data1 = new itemData(R.drawable.ic_account_circle_black_48dp, "User:" + mEditText.getText().toString());
-                itemData data2 = new itemData(R.drawable.ic_android_black_48dp, "Computer:" + "hogehoge");
+                itemData data1 = new itemData(R.drawable.ic_account_circle_black_48dp, "User", mEditText.getText().toString(), true);
+                itemData data2 = new itemData(R.drawable.ic_android_black_48dp, "Computer", "hogehoge", false);
                 list.add(data1);
                 list.add(data2);
 
@@ -105,10 +115,23 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = layoutInflater.inflate(R.layout.list_item1, parent, false);
+            if(list.get(position).getIsUser()){
 
-            ((ImageView)convertView.findViewById(R.id.imageView)).setImageResource(list.get(position).getImage_id());
-            ((TextView)convertView.findViewById(R.id.textView)).setText(list.get(position).getText());
+                convertView = layoutInflater.inflate(R.layout.list_item1, parent, false);
+
+                ((ImageView)convertView.findViewById(R.id.imageView1)).setImageResource(list.get(position).getImage_id());
+                ((TextView)convertView.findViewById(R.id.text1)).setText(list.get(position).getText());
+                ((TextView)convertView.findViewById(R.id.username1)).setText(list.get(position).getUserName());
+            }
+            else{
+
+                convertView = layoutInflater.inflate(R.layout.list_item2, parent, false);
+
+                ((ImageView)convertView.findViewById(R.id.imageView2)).setImageResource(list.get(position).getImage_id());
+                ((TextView)convertView.findViewById(R.id.text2)).setText(list.get(position).getText());
+                ((TextView)convertView.findViewById(R.id.username2)).setText(list.get(position).getUserName());
+            }
+
 
             return convertView;
         }
