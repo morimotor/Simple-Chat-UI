@@ -69,18 +69,18 @@ public class MainActivity extends AppCompatActivity {
         list = new ArrayList<>();
         adapter = new CustomAdapter(this);
 
-        Log.d(TAG, "aaa");
+
+        // 保存したデータの読み込み
         String json = getSharedPreferences("data", MODE_PRIVATE).getString("data", "null");
         if(!json.equals("null")){
             list = fromJSON(json);
             Log.d(TAG, list.toString());
         }
-        Log.d(TAG, "bbb");
+
 
         adapter.setDataList(list);
         mListView.setAdapter(adapter);
 
-        Log.d(TAG, "ccc");
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
                 adapter.notifyDataSetChanged();
 
+                // JSONに変換して保存
                 String json = toJSON(list);
                 getSharedPreferences("data", MODE_PRIVATE).edit().putString("data", json).apply();
                 Log.d(TAG, json);
