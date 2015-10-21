@@ -1,8 +1,10 @@
 package jp.morimotor.chatui;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private final String TAG = MainActivity.class.getSimpleName();
     private ListView mListView;
     private Button mButton;
     private EditText mEditText;
@@ -62,8 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
         adapter = new CustomAdapter(this);
+
+        Log.d(TAG, "aaa");
+        String json = getSharedPreferences("data", MODE_PRIVATE).getString("data", "null");
+        if(!json.equals("null")){
+            list = fromJSON(json);
+            Log.d(TAG, list.toString());
+        }
+        Log.d(TAG, "bbb");
+
         adapter.setDataList(list);
         mListView.setAdapter(adapter);
+
+        Log.d(TAG, "ccc");
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +94,27 @@ public class MainActivity extends AppCompatActivity {
                 mEditText.setText("");
 
                 adapter.notifyDataSetChanged();
+
+                String json = toJSON(list);
+                getSharedPreferences("data", MODE_PRIVATE).edit().putString("data", json).apply();
+                Log.d(TAG, json);
+
+
             }
         });
 
+    }
+
+    private String toJSON(ArrayList<itemData> items){
+        Gson gson = new Gson();
+
+        return gson.toJson(items);
+    }
+
+    private ArrayList fromJSON(String json){
+        Gson gson = new Gson();
+
+        return gson.fromJson(json, new TypeToken<List<itemData>>(){}.getType());
     }
 
 
