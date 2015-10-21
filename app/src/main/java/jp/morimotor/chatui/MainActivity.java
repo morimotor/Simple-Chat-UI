@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mEditText = (EditText)findViewById(R.id.editText);
         mButton = (Button)findViewById(R.id.button);
 
-        list = new ArrayList<itemData>();
+        list = new ArrayList<>();
         adapter = new CustomAdapter(this);
         adapter.setDataList(list);
         mListView.setAdapter(adapter);
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                 mEditText.setText("");
 
-
+                adapter.notifyDataSetChanged();
             }
         });
 
