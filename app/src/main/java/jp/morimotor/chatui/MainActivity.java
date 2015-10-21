@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private Button mButton;
     private EditText mEditText;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,22 @@ public class MainActivity extends AppCompatActivity {
         mEditText = (EditText)findViewById(R.id.editText);
         mButton = (Button)findViewById(R.id.button);
 
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
+
+        mListView.setAdapter(adapter);
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                adapter.add("User:" + mEditText.getText().toString());
+                adapter.add("Computer:hogehoge");
+                mEditText.setText("");
+
+
+            }
+        });
 
     }
 
